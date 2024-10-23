@@ -1,0 +1,48 @@
+#include <stdint.h>
+
+int main ();
+
+/*
+ * _start()
+ *
+ * startup code to initialize things and call main(). Should be located at
+ * address 0 in instruction mem. Put it at the beginning of the C file to make
+ * the compiler place it at addr 0.
+ *
+ */
+__attribute__((naked)) void _start() {
+  asm("li sp,4096");  // set up the stack pointer
+  main();             // call main()
+  while(1);           // Spin loop when main() returns
+}
+
+int main () {
+  // Instruction-Specific Tests
+  int a = 5, b = 10, c;
+
+  // Test Addition
+  c = a + b; // Should store 15 in c
+  asm("add x1, x0, %0" : : "r"(a)); // Load a into x1
+  asm("add x2, x0, %0" : : "r"(b)); // Load b into x2
+  asm("add x3, x1, x2"); // Test: x3 should be 15 (5 + 10)
+
+  // Test Subtraction
+  c = b - a; // Should store 5 in c
+  asm("sub x4, x2, x1"); // Test: x4 should be 5 (10 - 5)
+
+  // Test Multiplication
+  c = a * b; // Should store 50 in c
+  asm("mul x5, x1, x2"); // Test: x5 should be 50 (5 * 10)
+
+  // Random Instruction Tests
+  for (int k = 0; k < 100; k++) {
+    asm("add x0, x0, x0"); // No-op
+  }
+
+  // Targeted Tests for Data Hazards
+  asm("add x6, x1, x2"); // Use x1 and x2, should compute 15 again
+  asm("sub x7, x6, x1"); // Should compute 10 (15 - 5)
+  asm("mul x8, x7, x2");  // Should compute 100 (10 * 10)
+
+  return 0;
+}
