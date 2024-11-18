@@ -1,0 +1,66 @@
+module cpu_test (
+    input wire clk,
+    input wire reset,
+    output reg [31:0] result_add,
+    output reg [31:0] result_sub,
+    output reg [31:0] result_mul,
+    output reg [31:0] result_hazards,
+    output reg wr,
+    output reg [31:0] addr,
+    output reg [31:0] data_out,
+    input wire [31:0] data_in
+);
+    always @(posedge clk or posedge reset) begin
+        if (reset) begin
+            result_add <= 0;
+            result_sub <= 0;
+            result_mul <= 0;
+            result_hazards <= 0;
+            wr <= 0;
+            addr <= 0;
+            data_out <= 0;
+        end else begin
+            addr <= 0; // Target address
+            data_out <= 32'hAABBCCDD;
+            wr <= 1; 
+            #10;
+            wr <= 0; 
+            result_add <= data_out + data_in;
+            result_sub <= data_out - data_in;
+           
+        end
+    end
+endmodulemodule cpu_test (
+    input wire clk,
+    input wire reset,
+    output reg [31:0] result_add,
+    output reg [31:0] result_sub,
+    output reg [31:0] result_mul,
+    output reg [31:0] result_hazards,
+    output reg wr,
+    output reg [31:0] addr,
+    output reg [31:0] data_out,
+    input wire [31:0] data_in
+);
+    always @(posedge clk or posedge reset) begin
+        if (reset) begin
+            result_add <= 0;
+            result_sub <= 0;
+            result_mul <= 0;
+            result_hazards <= 0;
+            wr <= 0;
+            addr <= 0;
+            data_out <= 0;
+        end else begin
+            addr <= 0; // Target address
+            data_out <= 32'hAABBCCDD; 
+            wr <= 1; 
+        
+            #10;
+            wr <= 0; 
+            result_add <= data_out + data_in; 
+            result_sub <= data_out - data_in;
+         
+        end
+    end
+endmodule
