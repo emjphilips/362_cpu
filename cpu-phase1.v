@@ -6,22 +6,22 @@ module single_cycle_cpu (clk,rst);
     wire [31:0] encoded;
     wire is_halt;
     reg createdump; 
-    wire next_pc; 
     wire [31:0] alu_result;
     wire [2:0] alu_control;
     wire zero;
     wire [31:0] mux_out;
     wire [1:0] sel;
-    
-    reg [31:0] pc; 
+    wire [31:0] pc_next; 
+	wire [31:0] pc_out;
 
-always @(posedge clk or posedge rst) begin
-	if (rst) 
-	     pc <= 32'b0;
-	else if (next_pc)
-	     pc <= pc + 4;
-end 
-//alu code 
+pc_counter counter (
+	.clk(clk), .rst(rst), .pc_in(pc_next), .pc_out(pc_out)
+); 
+
+adder_pc adding_pc (
+	.pc(pc_out), .pc_next(pc_next)
+); 
+	
  alu_cpu myalu(
   .a(result1), .b(result2), .alu_control(alu_control),
 	 .result(alu_result), .zero(zero), .clk(clk)
