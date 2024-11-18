@@ -1,6 +1,8 @@
 module pc_counter( 
-  input [31:0] pc_in, 
-  input [31:0] pc_out);
+	input clk, 
+	input rst, 
+	input [31:0] pc_in, 
+	output reg [31:0] pc_out);
 
   always @(posedge clk or posedge rst) begin
 	if (rst) 
