@@ -4,7 +4,7 @@ module single_cycle_cpu (clk,rst);
     wire [31:0] result1;
     wire [31:0] result2; 
     wire [31:0] encoded;
-    wire is_halt;
+   // wire is_halt;
     reg createdump; 
     wire [31:0] alu_result;
     wire [2:0] alu_control;
@@ -12,7 +12,13 @@ module single_cycle_cpu (clk,rst);
     wire [31:0] mux_out;
     wire [1:0] sel;
     wire [31:0] pc_next; 
-	wire [31:0] pc_out;
+    wire [31:0] pc_out;
+    wire [31:0] instruction;
+    wire [4:0] rs, rt, rd;
+   // wire [31:0] reg_data1, reg_data2;
+
+    reg [31:0] register_file [0:31];
+
 
 pc_counter counter (
 	.clk(clk), .rst(rst), .pc_in(pc_next), .pc_out(pc_out)
@@ -21,11 +27,18 @@ pc_counter counter (
 adder_pc adding_pc (
 	.pc(pc_out), .pc_next(pc_next)
 ); 
-	
- alu_cpu myalu(
-  .a(result1), .b(result2), .alu_control(alu_control),
-	 .result(alu_result), .zero(zero), .clk(clk)
-  );
+
+fetch_instruc (
+	.clk(clk), .rst(rst), .pc_in(pc_next), .pc_out(pc_out), .instruction(instruc)  
+);
+
+alu_cpu myalu(
+	.a(register_file[rs]), .b(register_file[rt]), .alu_control(alu_control), .result(alu_result), .zero(zero),
+);
+
+decoding_logic mylog (
+	.instruction(instruc) , .rs(rs), .rt(rt),  .rd(rd), .alu_control(alu_control) 
+);
 
 //register code 
 register32 myregs(
@@ -47,11 +60,5 @@ memory mymem(
 	.wr(1'b0), .createdump(createdump), .clk(clk), .rst(rst) 
 );
 
-
-//decoding logic 
-decoding_logic mylog(
- .in_encode (encode), .next_pc(next_pc),
-	 .alu_control(alu_control), .is_halt(is_halt)
-); 
 
 endmodule
