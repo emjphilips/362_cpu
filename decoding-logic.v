@@ -32,11 +32,11 @@ adder_pc adding_pc (
         case (opcode)
             6'b000000: begin 
                 case (funct)
-                    6'b100000: alu_control = 3'b000; // ADD
-                    6'b100010: alu_control = 3'b001; // SUB
-                    6'b100100: alu_control = 3'b010; // AND
-                    6'b100101: alu_control = 3'b011; // OR
-                    6'b101010: alu_control = 3'b111; // SLT
+                    6'b100000: alu_control = 3'b000; // AND
+                    6'b100010: alu_control = 3'b001; // OR
+                    6'b100100: alu_control = 3'b010; // ADD
+                    6'b100101: alu_control = 3'b011; // SUB
+                    6'b101010: alu_control = 3'b111; // MUL
                     default: alu_control = 3'b000;
                 endcase
             end
