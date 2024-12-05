@@ -13,7 +13,7 @@ module single_cycle_cpu (clk,rst);
     wire [1:0] sel;
     wire [31:0] pc_next; 
     wire [31:0] pc_out;
-    wire [31:0] instruction;
+    wire [31:0] instruc;
     wire [4:0] rs, rt, rd;
    // wire [31:0] reg_data1, reg_data2;
 
@@ -24,16 +24,16 @@ pc_counter counter (
 	.clk(clk), .rst(rst), .pc_in(pc_next), .pc_out(pc_out)
 ); 
 
-adder_pc adding_pc (
-	.pc(pc_out), .pc_next(pc_next)
+adder_pc addPC (
+	.pc(pc_out), .next_pc(pc_next)
 ); 
 
 fetch_instruc fetch (
 	.clk(clk), .rst(rst), .pc_in(pc_next), .pc_out(pc_out), .instruction(instruc)  
 );
 
-alu myalu(
-	.a(register_file[rs]), .b(register_file[rt]), .alu_control(alu_control), .result(alu_result), .zero(zero),
+alu-cpu myalu(
+	.a(register_file[rs]), .b(register_file[rt]), .alu_control(alu_control), .result(alu_result), .zero(zero)
 );
 
 decoding_logic mylog (
@@ -60,7 +60,6 @@ memory2c mymem(
 	.wr(1'b0), .createdump(createdump), .clk(clk), .rst(rst) 
 );
 
-
     // Clock generation
     initial begin
         clk = 0;
@@ -70,13 +69,13 @@ memory2c mymem(
     // Simulation control
     initial begin
         // Initialize reset
-        reset = 1;
-        #10 reset = 0;
+        rst = 1;
+        #10 rst = 0;
         #100 $finish;
     end
 
     // Display PC and instruction values
     always @(posedge clk) begin
-        $display("PC = %h, Instruction = %h", pc_out, instruction);
+        $display("PC = %h, Instruction = %h", pc_out, instruc);
     end
 endmodule
