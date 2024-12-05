@@ -32,7 +32,7 @@ fetch_instruc fetch (
 	.clk(clk), .rst(rst), .pc_in(pc_next), .pc_out(pc_out), .instruction(instruc)  
 );
 
-alu_cpu myalu(
+alu myalu(
 	.a(register_file[rs]), .b(register_file[rt]), .alu_control(alu_control), .result(alu_result), .zero(zero),
 );
 
@@ -55,7 +55,7 @@ mux4to1 mymux(
 );
 
 //memory 
-memory mymem(
+memory2c mymem(
   .data_out(encoded), .data_in(32'b0), .addr(pc), .enable(1'b1), 
 	.wr(1'b0), .createdump(createdump), .clk(clk), .rst(rst) 
 );
