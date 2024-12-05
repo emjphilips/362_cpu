@@ -1,3 +1,4 @@
+
 module single_cycle_cpu (clk,rst);
     input wire clk;
     input wire rst; 
@@ -32,7 +33,7 @@ fetch_instruc fetch (
 	.clk(clk), .rst(rst), .pc_in(pc_next), .pc_out(pc_out), .instruction(instruc)  
 );
 
-alu-cpu myalu(
+alu_cpu myalu(
 	.a(register_file[rs]), .b(register_file[rt]), .alu_control(alu_control), .result(alu_result), .zero(zero)
 );
 
@@ -60,22 +61,4 @@ memory2c mymem(
 	.wr(1'b0), .createdump(createdump), .clk(clk), .rst(rst) 
 );
 
-    // Clock generation
-    initial begin
-        clk = 0;
-        forever #5 clk = ~clk; // Toggle clock every 5 time units
-    end
-
-    // Simulation control
-    initial begin
-        // Initialize reset
-        rst = 1;
-        #10 rst = 0;
-        #100 $finish;
-    end
-
-    // Display PC and instruction values
-    always @(posedge clk) begin
-        $display("PC = %h, Instruction = %h", pc_out, instruc);
-    end
 endmodule
