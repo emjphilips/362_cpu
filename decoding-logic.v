@@ -1,3 +1,4 @@
+
 //`define FIRST_ENCODE 32'b00000000000000000000000000_110111 
 //`define HALT_ENCODE  32'b00000000000000000000000000_111111 
 //`define NEXT_PC_IMM  1'b1
@@ -14,14 +15,6 @@ module decoding_logic (
     wire [5:0] funct  = instruction[5:0];
     wire [31:0] pc_next; 
     wire [31:0] pc_out;
-
-pc_counter counter (
-	.clk(clk), .rst(rst), .pc_in(pc_next), .pc_out(pc_out)
-); 
-
-adder_pc adding_pc (
-	.pc(pc_out), .pc_next(pc_next)
-);
 
     always @(*) begin
         rs = instruction[25:21];
@@ -44,10 +37,3 @@ adder_pc adding_pc (
         endcase
     end
 endmodule
-  
-    default: begin
-        alu_control = 3'b000;
-        assign next_pc = pc + 4; 
-    end 
-endcase
-
