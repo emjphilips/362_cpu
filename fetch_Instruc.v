@@ -1,3 +1,4 @@
+
 module fetch_instruc (
     input wire clk,            
     input wire rst,             
@@ -30,23 +31,3 @@ module fetch_instruc (
         instruction = instruction_memory[pc_out[31:2]]; 
     end
 endmodule
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  endmodule 
