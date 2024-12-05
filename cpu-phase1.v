@@ -28,7 +28,7 @@ adder_pc adding_pc (
 	.pc(pc_out), .pc_next(pc_next)
 ); 
 
-fetch_instruc (
+fetch_instruc fetch (
 	.clk(clk), .rst(rst), .pc_in(pc_next), .pc_out(pc_out), .instruction(instruc)  
 );
 
