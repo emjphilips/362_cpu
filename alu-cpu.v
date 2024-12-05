@@ -4,7 +4,7 @@ module alu_cpu(
     input [2:0] alu_control,
     output reg [31:0] result,
     output reg zero,
-    
+    input wire clk
 );
     
     always @(posedge clk) begin
@@ -20,4 +20,3 @@ module alu_cpu(
       //  zero <= (result == 0);
     end
 endmodule
-
