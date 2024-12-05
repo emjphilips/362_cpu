@@ -61,4 +61,22 @@ memory mymem(
 );
 
 
+    // Clock generation
+    initial begin
+        clk = 0;
+        forever #5 clk = ~clk; // Toggle clock every 5 time units
+    end
+
+    // Simulation control
+    initial begin
+        // Initialize reset
+        reset = 1;
+        #10 reset = 0;
+        #100 $finish;
+    end
+
+    // Display PC and instruction values
+    always @(posedge clk) begin
+        $display("PC = %h, Instruction = %h", pc_out, instruction);
+    end
 endmodule
